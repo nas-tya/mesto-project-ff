@@ -8,17 +8,15 @@ const placesList = document.querySelector(".places__list");
 // клонировать шаблон,
 // установить значения вложенных элементов,
 // добавить к иконке удаления обработчик клика, по которому будет вызван переданный в аргументах колбэк
-function createCard(
-  image = "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  title = "пу-пу-пууууу"
-) {
+function createCard(image, title, remove) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   cardElement.querySelector(".card__image").src = image;
+  cardElement.querySelector(".card__image").alt = 'Картинка, которую автор подписал как: ' + title;
   cardElement.querySelector(".card__title").textContent = title;
   cardElement
     .querySelector(".card__delete-button")
-    .addEventListener("click", deleteCard);
-  placesList.append(cardElement);
+    .addEventListener("click", remove);
+  return cardElement;
 }
 
 // @todo: Функция удаления карточки
@@ -27,4 +25,4 @@ function deleteCard(event) {
 }
 
 // @todo: Вывести карточки на страницу в places
-initialCards.forEach((item) => createCard(item.link, item.name));
+initialCards.forEach((item) => placesList.append(createCard(item.link, item.name, deleteCard)));
