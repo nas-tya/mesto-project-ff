@@ -11,7 +11,7 @@ export function createCard(image, title, remove, like, openImagePopup) {
     .addEventListener("click", remove);
   const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", like);
-  cardImage.addEventListener("click", () => openImagePopup(image, title));
+  cardImage.addEventListener("click", (event) => openImagePopup(image, title));
 
   return cardElement;
 }

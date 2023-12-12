@@ -3,7 +3,6 @@ import { initialCards } from "./cards";
 import { createCard, deleteCard, likeHandler } from "./components/card";
 import { openPopup, closePopup } from "./components/modal";
 
-const cardTemplate = document.querySelector("#card-template").content;
 const placesList = document.querySelector(".places__list");
 
 function renderInitialCards() {
@@ -94,7 +93,7 @@ function handleCardFormSubmit(evt) {
   const placeValue = placeInput.value;
   const linkValue = linkInput.value;
 
-  const newCard = createCard(linkValue, placeValue, deleteCard, likeHandler);
+  const newCard = createCard(linkValue, placeValue, deleteCard, likeHandler, openImgPopup);
   placesList.insertBefore(newCard, placesList.firstElementChild);
 
   formCardElement.reset();
