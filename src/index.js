@@ -2,6 +2,7 @@ import "./pages/index.css";
 import { initialCards } from "./cards";
 import { createCard, deleteCard, likeHandler } from "./components/card";
 import { openPopup, closePopup } from "./components/modal";
+import { enableValidation, clearValidation } from "./components/validation";
 
 const placesList = document.querySelector(".places__list");
 
@@ -71,6 +72,8 @@ function handleEditFormSubmit(evt) {
 
   formEditElement.reset();
   closePopup(popupProfile);
+
+  clearValidation(formEditElement, validationConfig);
 }
 
 formEditElement.addEventListener("submit", handleEditFormSubmit);
@@ -98,6 +101,23 @@ function handleCardFormSubmit(evt) {
 
   formCardElement.reset();
   closePopup(popupAddPic);
+
+  clearValidation(formCardElement, validationConfig);
 }
 
 formCardElement.addEventListener("submit", handleCardFormSubmit);
+
+
+// включение валидации вызовом enableValidation
+// все настройки передаются при вызове
+
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
+
+enableValidation(validationConfig);
