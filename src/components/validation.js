@@ -2,6 +2,7 @@ import { validationConfig } from "../index";
 
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
+  
   if (!errorElement) {
     // Если элемент ошибки не найден, создайте его и добавьте его к форме
     const errorElement = document.createElement('div');
