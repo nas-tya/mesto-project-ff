@@ -15,13 +15,18 @@
 }
 
 .popup__input_type_error {
-  /* Стили для инпута при наличии ошибки */
-  border-bottom: 1px solid red; 
+  border-bottom: 1px solid #F00;; 
 }
 
 .popup__error_visible {
-  display: block; /* Показать элемент */
-  color: red; /* Пример красного текста */
+  display: block; 
+  color: #F00;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  /* position: absolute; */
 }
 
 @media screen and (max-width: 568px) {

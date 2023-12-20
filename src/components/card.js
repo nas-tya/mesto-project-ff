@@ -30,7 +30,9 @@ export function createCard(
 
   const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.classList.toggle("card__like-button_is-active", isLiked);
-  likeButton.addEventListener("click", (event) => like(event, cardId));
+  likeButton.addEventListener("click", (event) =>
+    like(event, cardId, likeButton)
+  );
 
   cardImage.addEventListener("click", (event) => openImagePopup(image, title));
 
@@ -50,8 +52,7 @@ export function deleteCard(cardId) {
   });
 }
 
-export function likeHandler(event, cardId) {
-  const likeButton = event.target;
+export function likeHandler(event, cardId, likeButton) {
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
   const method = isLiked ? "DELETE" : "PUT";
 

@@ -10,15 +10,16 @@ const placesList = document.querySelector(".places__list");
 
 function renderInitialCards() {
   const cardsPromise = api.getInitialCards();
+  const userPromise = api.getUserInfo();
 
-  Promise.all([cardsPromise])
-    .then(([cardsData]) => {
+  Promise.all([cardsPromise, userPromise])
+    .then(([cardsData, userData]) => {
       console.log("Cards data:", cardsData);
 
+      const userId = userData._id;
+
       cardsData.forEach((item) => {
-        const isLikedByUser = item.likes.some(
-          (like) => like._id === "c58787a5a7d1ae05748d4119"
-        );
+        const isLikedByUser = item.likes.some((like) => like._id === userId);
 
         const card = createCard(
           item.link,
@@ -192,13 +193,17 @@ function handleCardFormSubmit(evt) {
 
   api
     .addCard(placeValue, linkValue)
-    .then(() => {
+    .then((newCardData) => {
       const newCard = createCard(
-        linkValue,
-        placeValue,
+        newCardData.link,
+        newCardData.name,
+        newCardData.likes,
+        newCardData.owner._id,
+        newCardData._id,
         deleteCard,
         likeHandler,
-        openImgPopup
+        openImgPopup,
+        false
       );
       placesList.insertBefore(newCard, placesList.firstElementChild);
       clearValidation(formCardElement, validationConfig);
