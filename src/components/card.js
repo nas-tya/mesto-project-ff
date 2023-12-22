@@ -1,5 +1,13 @@
+import * as api from "./api";
+
 const cardTemplate = document.querySelector("#card-template").content;
 const URL = "https://nomoreparties.co/v1/wff-cohort-2";
+
+
+function cloneCardTemplate() {
+  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+  return cardElement;
+}
 
 export function createCard(
   image,
@@ -10,9 +18,11 @@ export function createCard(
   remove,
   like,
   openImagePopup,
-  isLiked
+  isLiked,
+  userId
 ) {
-  const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
+  
+  const cardElement = cloneCardTemplate();
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = image;
   cardImage.alt = "Картинка, которую автор подписал как: " + title;
@@ -22,7 +32,8 @@ export function createCard(
   cardElement.dataset.cardId = cardId;
 
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  if (ownerId === "c58787a5a7d1ae05748d4119") {
+  console.log(userId);
+  if (ownerId === userId) {
     deleteButton.addEventListener("click", () => remove(cardId));
   } else {
     deleteButton.style.display = "none";
@@ -40,30 +51,19 @@ export function createCard(
 }
 
 export function deleteCard(cardId) {
-  fetch(URL + "/cards/" + cardId, {
-    method: "DELETE",
-    headers: {
-      authorization: "0d77309c-e671-4ba8-8979-1488cdd2afa2",
-      "Content-Type": "application/json",
-    },
-  }).then((res) => {
+  api.deleteCard(cardId)
+  .then((res) => {
     const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
     cardElement.remove();
+  })
+  .catch((error) => {
+    console.error("Ошибка:", error);
   });
 }
 
 export function likeHandler(event, cardId, likeButton) {
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
-  const method = isLiked ? "DELETE" : "PUT";
-
-  fetch(URL + "/cards/likes/" + cardId, {
-    method: method,
-    headers: {
-      authorization: "0d77309c-e671-4ba8-8979-1488cdd2afa2",
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => res.json())
+  api.toggleLike(cardId, isLiked)
     .then((data) => {
       const likesCountElement = likeButton
         .closest(".card")
@@ -72,6 +72,6 @@ export function likeHandler(event, cardId, likeButton) {
       likesCountElement.textContent = data.likes.length;
     })
     .catch((error) => {
-      console.error("Error updating likes:", error);
+      console.error("Ошибка:", error);
     });
 }

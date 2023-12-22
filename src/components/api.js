@@ -4,26 +4,23 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export function getInitialCards() {
   return fetch(`${URL}/cards`, {
     headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 export function getUserInfo() {
   return fetch(`${URL}/users/me`, {
     headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 export function updateUserInfo(nameValue, aboutValue) {
@@ -34,12 +31,7 @@ export function updateUserInfo(nameValue, aboutValue) {
       name: nameValue,
       about: aboutValue,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 export function addCard(placeValue, linkValue) {
@@ -50,12 +42,7 @@ export function addCard(placeValue, linkValue) {
       name: placeValue,
       link: linkValue,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 export function deleteCard(cardId) {
@@ -67,16 +54,10 @@ export function deleteCard(cardId) {
 
 export function toggleLike(cardId, isLiked) {
   const method = isLiked ? "DELETE" : "PUT";
-
   return fetch(`${URL}/cards/likes/${cardId}`, {
     method,
     headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
 
 export function updateAvatar(avatarUrl) {
@@ -84,10 +65,5 @@ export function updateAvatar(avatarUrl) {
     method: "PATCH",
     headers,
     body: JSON.stringify({ avatar: avatarUrl }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(checkResponse);
 }
