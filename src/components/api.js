@@ -49,7 +49,7 @@ export function deleteCard(cardId) {
   return fetch(`${URL}/cards/${cardId}`, {
     method: "DELETE",
     headers,
-  });
+  }).then(checkResponse);
 }
 
 export function toggleLike(cardId, isLiked) {

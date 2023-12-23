@@ -1,7 +1,6 @@
 import * as api from "./api";
 
 const cardTemplate = document.querySelector("#card-template").content;
-const URL = "https://nomoreparties.co/v1/wff-cohort-2";
 
 
 function cloneCardTemplate() {
